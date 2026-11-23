@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLACK RUSSIA | СЕРВЕР MOSCOW — Форум</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root{
+  --bg:#1a1a1a; --panel:#272626; --panel2:#2e2d2d; --panel3:#353434;
+  --border:#3d3c3c; --text:#dfdfdf; --muted:#9a9a9a; --accent:rgb(250,8,8);
+  --green:#4caf50; --orange:#e8a33d; --red:#e05050; --yellow:#d6c24a; --darkred:#8c2b2b;
+}
+body{ background:var(--bg); color:var(--text); font-family:'Segoe UI',Roboto,Arial,sans-serif; font-size:14px; }
+a{ color:inherit; text-decoration:none; }
+.wrap{ max-width:1200px; margin:0 auto; padding:0 12px; }
+
+/* Header */
+header{ background:#212020; border-bottom:1px solid var(--border); }
+.header-inner{ display:flex; align-items:center; justify-content:space-between; padding:14px 12px; }
+.logo{ display:flex; align-items:center; gap:10px; cursor:pointer; }
+.logo-badge{ width:42px; height:42px; background:var(--accent); border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:20px; color:#fff; box-shadow:0 0 18px rgba(250,8,8,.45); }
+.logo-text{ line-height:1.1; }
+.logo-text b{ font-size:18px; letter-spacing:1px; }
+.logo-text span{ display:block; color:var(--muted); font-size:11px; letter-spacing:2px; }
+.userbox{ display:flex; align-items:center; gap:10px; }
+.avatar{ width:36px; height:36px; border-radius:50%; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; }
+.nick{ font-weight:600; color:#fff; }
+button{ font-family:inherit; cursor:pointer; }
+.btn{ background:var(--accent); color:#fff; border:none; padding:8px 16px; border-radius:4px; font-weight:600; font-size:13px; }
+.btn:hover{ filter:brightness(1.15); }
+.btn-ghost{ background:transparent; color:var(--text); border:1px solid var(--border); padding:7px 14px; border-radius:4px; font-size:13px; }
+.btn-ghost:hover{ border-color:#5a5a5a; }
+
+/* Nav */
+nav{ background:#242323; border-bottom:3px solid var(--accent); position:sticky; top:0; z-index:50; }
+.nav-inner{ display:flex; align-items:center; gap:4px; padding:0 12px; overflow-x:auto; }
+.nav-tab{ padding:12px 16px; color:#c8c8c8; font-weight:600; font-size:13px; white-space:nowrap; border-bottom:3px solid transparent; margin-bottom:-3px; cursor:pointer; }
+.nav-tab:hover{ color:#fff; }
+.nav-tab.active{ color:#fff; border-bottom-color:var(--accent); }
+.nav-search{ margin-left:auto; display:flex; gap:8px; align-items:center; }
+.nav-search input{ background:#1c1b1b; border:1px solid var(--border); color:var(--text); padding:6px 10px; border-radius:4px; font-size:13px; width:180px; }
+
+/* Breadcrumbs */
+.crumbs{ padding:12px 0 6px; color:var(--muted); font-size:12.5px; }
+.crumbs a{ color:#b9b9b9; cursor:pointer; }
+.crumbs a:hover{ color:#fff; }
+.crumbs .sep{ margin:0 6px; color:#666; }
+
+/* Layout */
+.layout{ display:flex; gap:16px; padding:8px 0 40px; }
+.main{ flex:1; min-width:0; }
+.sidebar{ width:270px; flex-shrink:0; }
+
+/* Category block */
+.cat{ margin-bottom:16px; background:var(--panel); border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+.cat-head{ background:#2b2a2a; padding:11px 14px; font-weight:700; font-size:14px; color:#fff; cursor:pointer; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); }
+.cat-head .toggle{ color:#777; font-size:12px; }
+.cat-head .toggle.closed::before{ content:"►"; }
+.cat-head .toggle.open::before{ content:"▼"; }
+.node{ display:flex; align-items:center; gap:12px; padding:12px 14px; border-top:1px solid #333232; cursor:pointer; background:var(--panel); transition:background .15s; }
+.node:hover{ background:var(--panel2); }
+.node:first-of-type{ border-top:none; }
+.node-icon{ width:36px; height:36px; border-radius:6px; background:#3a3939; display:flex; align-items:center; justify-content:center; font-size:17px; color:#cfcfcf; flex-shrink:0; }
+.node-info{ flex:1; min-width:0; }
+.node-title{ font-weight:600; color:#eee; font-size:14px; }
+.node-desc{ color:var(--muted); font-size:12px; margin-top:2px; }
+.node-stats{ text-align:right; color:var(--muted); font-size:12px; line-height:1.5; flex-shrink:0; }
+.node-stats b{ color:#ccc; }
+.node-last{ color:var(--muted); font-size:11.5px; text-align:right; width:160px; flex-shrink:0; }
+.node-last b{ color:#bbb; }
+
+/* Topic row */
+.topic{ display:flex; align-items:center; gap:12px; padding:11px 14px; border-top:1px solid #333232; cursor:pointer; background:var(--panel); }
+.topic:hover{ background:var(--panel2); }
+.pfx{ font-size:11px; padding:2px 8px; border-radius:3px; font-weight:600; white-space:nowrap; }
+.pfx-review{ background:rgba(232,163,61,.15); color:var(--orange); border:1px solid rgba(232,163,61,.4); }
+.pfx-ok{ background:rgba(76,175,80,.15); color:var(--green); border:1px solid rgba(76,175,80,.4); }
+.pfx-no{ background:rgba(224,80,80,.15); color:var(--red); border:1px solid rgba(224,80,80,.4); }
+.pfx-wait{ background:rgba(214,194,74,.15); color:var(--yellow); border:1px solid rgba(214,194,74,.4); }
+.pfx-imp{ background:rgba(140,43,43,.25); color:#e07070; border:1px solid rgba(140,43,43,.5); }
+.pfx-none{ display:none; }
+.topic-info{ flex:1; min-width:0; }
+.topic-title{ color:#e8e8e8; font-weight:600; font-size:14px; }
+.topic-meta{ color:var(--muted); font-size:12px; margin-top:3px; }
+.topic-meta b{ color:#c0c0c0; }
+.topic-stats{ color:var(--muted); font-size:12px; text-align:right; line-height:1.5; width:110px; flex-shrink:0; }
+.topic-stats b{ color:#ccc; }
+
+/* Empty state */
+.empty{ padding:36px 20px; text-align:center; color:var(--muted); font-size:13.5px; border-top:1px solid #333232; background:var(--panel); }
+.empty .big{ font-size:30px; margin-bottom:10px; opacity:.5; }
+
+/* Toolbar */
+.toolbar{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; gap:10px; flex-wrap:wrap; }
+.toolbar .left{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.chip{ background:var(--panel2); border:1px solid var(--border); color:#c8c8c8; padding:6px 12px; border-radius:4px; font-size:12.5px; cursor:pointer; }
+.chip.active{ border-color:var(--accent); color:#fff; background:rgba(250,8,8,.12); }
+
+/* Sidebar blocks */
+.block{ background:var(--panel); border:1px solid var(--border); border-radius:6px; margin-bottom:16px; overflow:hidden; }
+.block-head{ background:#2b2a2a; padding:10px 14px; font-weight:700; font-size:13px; color:#fff; border-bottom:1px solid var(--border); }
+.block-body{ padding:12px 14px; font-size:13px; }
+.stat-row{ display:flex; justify-content:space-between; padding:5px 0; color:var(--muted); }
+.stat-row b{ color:#ddd; }
+.online-big{ text-align:center; padding:8px 0 4px; }
+.online-big .num{ font-size:30px; font-weight:800; color:var(--accent); }
+.online-big .lbl{ color:var(--muted); font-size:11px; letter-spacing:1px; }
+.online-dot{ display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--green); margin-right:6px; box-shadow:0 0 8px rgba(76,175,80,.8); animation:pulse 2s infinite; }
+@keyframes pulse{ 0%,100%{opacity:1} 50%{opacity:.4} }
+
+/* Modal */
+.overlay{ position:fixed; inset:0; background:rgba(0,0,0,.7); display:none; align-items:center; justify-content:center; z-index:100; }
+.overlay.show{ display:flex; }
+.modal{ background:var(--panel2); border:1px solid var(--border); border-radius:8px; width:520px; max-width:94vw; max-height:88vh; overflow:auto; padding:20px; }
+.modal h3{ color:#fff; margin-bottom:14px; font-size:17px; }
+.field{ margin-bottom:12px; }
+.field label{ display:block; color:var(--muted); font-size:12px; margin-bottom:5px; }
+.field input, .field select, .field textarea{ width:100%; background:#1c1b1b; border:1px solid var(--border); color:var(--text); padding:9px 10px; border-radius:4px; font-size:13px; font-family:inherit; }
+.field textarea{ min-height:110px; resize:vertical; }
+.field input:focus, .field select:focus, .field textarea:focus{ outline:none; border-color:var(--accent); }
+.modal-actions{ display:flex; justify-content:flex-end; gap:10px; margin-top:16px; }
+
+/* Topic page */
+.post{ background:var(--panel); border:1px solid var(--border); border-radius:6px; margin-bottom:14px; display:flex; overflow:hidden; }
+.post-side{ width:170px; flex-shrink:0; background:#242323; padding:16px 12px; text-align:center; border-right:1px solid var(--border); }
+.post-side .avatar{ margin:0 auto 8px; width:52px; height:52px; font-size:22px; }
+.post-side .uname{ font-weight:600; color:#eee; font-size:13px; word-break:break-word; }
+.post-side .urole{ color:var(--muted); font-size:11px; margin-top:3px; }
+.post-main{ flex:1; min-width:0; padding:14px 18px; }
+.post-head{ display:flex; justify-content:space-between; color:var(--muted); font-size:12px; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid #333232; }
+.post-body{ line-height:1.6; color:#d8d8d8; white-space:pre-wrap; word-wrap:break-word; }
+.backline{ margin-bottom:12px; }
+.backline a{ color:#b9b9b9; cursor:pointer; }
+.backline a:hover{ color:#fff; }
+.quickreply{ background:var(--panel); border:1px solid var(--border); border-radius:6px; padding:14px; }
+.quickreply textarea{ width:100%; background:#1c1b1b; border:1px solid var(--border); color:var(--text); padding:10px; border-radius:4px; font-size:13px; font-family:inherit; min-height:90px; resize:vertical; }
+
+footer{ border-top:1px solid var(--border); padding:18px 12px; text-align:center; color:#777; font-size:12px; }
+.toast{ position:fixed; bottom:24px; right:24px; background:var(--accent); color:#fff; padding:12px 18px; border-radius:6px; font-size:13px; font-weight:600; box-shadow:0 6px 20px rgba(0,0,0,.5); opacity:0; transform:translateY(12px); transition:.3s; z-index:200; pointer-events:none; }
+.toast.show{ opacity:1; transform:none; }
+
+@media(max-width:900px){ .sidebar{ display:none; } .node-last{ display:none; } .post-side{ width:90px; padding:12px 8px; } .post-side .urole{ display:none; } }
+@media(max-width:640px){ .nav-search input{ width:120px; } .nick{ display:none; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-inner">
+    <div class="logo" onclick="goHome()">
+      <div class="logo-badge">BR</div>
+      <div class="logo-text"><b>BLACK RUSSIA</b><span>СЕРВЕР MOSCOW</span></div>
+    </div>
+    <div class="userbox" id="userbox"></div>
+  </div>
+</header>
+
+<nav>
+  <div class="wrap nav-inner">
+    <div class="nav-tab active" onclick="goHome()">Форум</div>
+    <div class="nav-tab" onclick="filterCat('all')">Все разделы</div>
+    <div class="nav-tab" onclick="filterCat('gos')">Гос. организации</div>
+    <div class="nav-tab" onclick="filterCat('crime')">Криминальные</div>
+    <div class="nav-tab" onclick="filterCat('zhal')">Жалобы</div>
+    <div class="nav-search">
+      <input id="searchInput" placeholder="Поиск по темам..." oninput="renderTopics()">
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="crumbs" id="crumbs"></div>
+
+  <!-- HOME -->
+  <div id="homeView">
+    <div class="layout">
+      <div class="main" id="mainContent"></div>
+      <div class="sidebar">
+        <div class="block">
+          <div class="block-head"><span class="online-dot"></span>Сервер MOSCOW — онлайн</div>
+          <div class="block-body online-big">
+            <div class="num" id="onlineNum">0</div>
+            <div class="lbl">ИГРОКОВ СЕЙЧАС ОНЛАЙН</div>
+          </div>
+        </div>
+        <div class="block">
+          <div class="block-head">Статистика форума</div>
+          <div class="block-body">
+            <div class="stat-row"><span>Тем:</span><b id="stTopics">0</b></div>
+            <div class="stat-row"><span>Сообщений:</span><b id="stPosts">0</b></div>
+            <div class="stat-row"><span>Участников:</span><b>12 483</b></div>
+            <div class="stat-row"><span>Новый участник:</span><b id="stNew">—</b></div>
+          </div>
+        </div>
+        <div class="block">
+          <div class="block-head">Последние темы</div>
+          <div class="block-body" id="lastTopics"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NODE -->
+  <div id="nodeView" style="display:none">
+    <div class="toolbar">
+      <div class="left">
+        <button class="btn" onclick="openModal()">+ Создать тему</button>
+        <button class="chip active" data-sort="new" onclick="setSort('new')">Новые</button>
+        <button class="chip" data-sort="pop" onclick="setSort('pop')">Популярные</button>
+      </div>
+    </div>
+    <div class="cat" id="nodeTopicsBox"></div>
+  </div>
+
+  <!-- TOPIC -->
+  <div id="topicView" style="display:none">
+    <div class="backline"><a onclick="goBack()">← Назад в раздел</a></div>
+    <div id="postsBox"></div>
+    <div class="quickreply" id="quickReply">
+      <textarea id="replyText" placeholder="Напишите ответ..."></textarea>
+      <div style="margin-top:10px; text-align:right;"><button class="btn" onclick="sendReply()">Ответить</button></div>
+    </div>
+  </div>
+</div>
+
+<footer>© BLACK RUSSIA | СЕРВЕР MOSCOW — фанатский форум по мотивам. Все права на оригинальный бренд принадлежат правообладателям.</footer>
+
+<!-- Modal: create topic -->
+<div class="overlay" id="topicModal">
+  <div class="modal">
+    <h3>Создание темы</h3>
+    <div class="field"><label>Раздел</label><select id="mCat"></select></div>
+    <div class="field"><label>Префикс</label>
+      <select id="mPfx">
+        <option value="">Без префикса</option>
+        <option value="review">На рассмотрении</option>
+        <option value="ok">Одобрено</option>
+        <option value="no">Отказано</option>
+        <option value="wait">Ожидание</option>
+        <option value="imp">Важно</option>
+      </select>
+    </div>
+    <div class="field"><label>Заголовок темы</label><input id="mTitle" placeholder="Например: Заявление на должность заместителя ФСБ"></div>
+    <div class="field"><label>Текст темы</label><textarea id="mBody" placeholder="Опишите содержание..."></textarea></div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal()">Отмена</button>
+      <button class="btn" onclick="createTopic()">Опубликовать</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: login -->
+<div class="overlay" id="loginModal">
+  <div class="modal">
+    <h3>Вход на форум</h3>
+    <div class="field"><label>Игровой ник (Name_Surname)</label><input id="lNick" placeholder="Ivan_Petrov"></div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal()">Отмена</button>
+      <button class="btn" onclick="doLogin()">Войти</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const CATS = [
+  { id:"osnov", name:"Основной раздел", icon:"📌", nodes:[
+    { id:"news",  name:"Новости и обновления", icon:"📰", desc:"Анонсы обновлений и событий сервера" },
+    { id:"rules", name:"Правила сервера",      icon:"📜", desc:"Обязательно к прочтению каждому игроку" },
+    { id:"ideas", name:"Обсуждения и предложения", icon:"💬", desc:"Идеи по улучшению сервера" }
+  ]},
+  { id:"server", name:"Сервер MOSCOW", icon:"🏙️", nodes:[
+    { id:"zhal",  name:"Жалобы",               icon:"⚖️", desc:"Жалобы на игроков и администрацию" },
+    { id:"appl",  name:"Заявления и апелляции", icon:"📝", desc:"Обжалование наказаний и разбаны" },
+    { id:"gos",   name:"Государственные организации", icon:"🏛️", desc:"Правительство, ФСБ, ГИБДД, УМВД, Армия, Больница, СМИ, ФСИН" },
+    { id:"crime", name:"Криминальные организации", icon:"🔥", desc:"Заявления и активность семей и мафий" },
+    { id:"leader",name:"Лидерский раздел",     icon:"👑", desc:"Отчёты лидеров, активность организаций" },
+    { id:"admin", name:"Агенты поддержки",     icon:"🎧", desc:"Вопросы к администрации сервера" },
+    { id:"tech",  name:"Технический раздел",   icon:"🔧", desc:"Баги, вылеты, технические неполадки" }
+  ]},
+  { id:"comm", name:"Общение", icon:"🎭", nodes:[
+    { id:"guides",name:"Гайды и руководства",  icon:"📚", desc:"Полезные гайды игроков сервера" },
+    { id:"flood", name:"Флудилка",             icon:"🍺", desc:"Свободное общение на любые темы" },
+    { id:"media", name:"Медиа и гараж",        icon:"📸", desc:"Скриншоты, видео, тюнинг и авто" }
+  ]}
+];
+const NODE_NAME = {};
+CATS.forEach(c=>c.nodes.forEach(n=>NODE_NAME[n.id]=n));
+const PFX = { review:["На рассмотрении","pfx-review"], ok:["Одобрено","pfx-ok"], no:["Отказано","pfx-no"], wait:["Ожидание","pfx-wait"], imp:["Важно","pfx-imp"] };
+const KEY = "br_moscow_forum_v1";
+let topics = [], user = null, state = { view:"home", node:null, topic:null, sort:"new", catFilter:"all" };
+
+function load(){
+  try{
+    const d = JSON.parse(localStorage.getItem(KEY)||"{}");
+    topics = d.topics||[];
+    user = d.user||null;
+  }catch(e){ topics=[]; user=null; }
+}
+function save(){
+  localStorage.setItem(KEY, JSON.stringify({topics, user}));
+}
+function esc(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function toast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2200); }
+function timeAgo(ts){
+  const s=Math.floor((Date.now()-ts)/1000);
+  if(s<60)return"только что";
+  if(s<3600)return Math.floor(s/60)+" мин назад";
+  if(s<86400)return Math.floor(s/3600)+" ч назад";
+  return Math.floor(s/86400)+" дн назад";
+}
+function userboxRender(){
+  const box=document.getElementById("userbox");
+  if(user){
+    box.innerHTML = `<div class="avatar">${esc(user[0].toUpperCase())}</div><div><div class="nick">${esc(user)}</div><div style="font-size:11px;color:var(--muted)"></div></div><button class="btn-ghost" onclick="logout()">Выйти</button>`;
+  } else {
+    box.innerHTML = `<button class="btn" onclick="openLogin()">Войти</button>`;
+  }
+}
+function openLogin(){ document.getElementById("loginModal").classList.add("show"); document.getElementById("lNick").focus(); }
+function doLogin(){
+  const n = document.getElementById("lNick").value.trim();
+  if(!n){ toast("Введите ник"); return; }
+  if(!/^[A-Za-zА-Яа-яЁё]+[_ ]?[A-Za-zА-Яа-яЁё]*$/.test(n)){ toast("Ник в формате Name_Surname"); return; }
+  user = n; save(); userboxRender(); closeModal(); toast("Добро пожаловать, "+n+"!");
+}
+function logout(){ user=null; save(); userboxRender(); toast("Вы вышли"); }
+
+function crumbs(items){
+  const el=document.getElementById("crumbs");
+  el.innerHTML = `<a onclick="goHome()">Форум</a>` + items.map(i=>`<span class="sep">›</span>${i.href?`<a onclick="${i.href}">${esc(i.name)}</a>`:`<span style="color:#ddd">${esc(i.name)}</span>`}`).join("");
+}
+function goHome(){
+  state={view:"home",node:null,topic:null,sort:"new",catFilter:"all"};
+  document.getElementById("searchInput").value="";
+  showViews(); renderHome();
+  crumbs([{name:"Форум"}]);
+  window.scrollTo(0,0);
+}
+function showViews(){
+  document.getElementById("homeView").style.display = state.view==="home"?"block":"none";
+  document.getElementById("nodeView").style.display = state.view==="node"?"block":"none";
+  document.getElementById("topicView").style.display = state.view==="topic"?"block":"none";
+}
+function openNode(id){
+  state.view="node"; state.node=id; showViews(); renderNode();
+  crumbs([{name:"Форум",href:"goHome()"},{name:"Сервер MOSCOW",href:"goHome()"},{name:NODE_NAME[id].name}]);
+  window.scrollTo(0,0);
+}
+function openTopic(id){
+  const t = topics.find(x=>x.id===id); if(!t) return;
+  t.views=(t.views||0)+1; save();
+  state.view="topic"; state.topic=id; showViews(); renderTopic();
+  crumbs([{name:"Форум",href:"goHome()"},{name:"Сервер MOSCOW",href:"goHome()"},{name:NODE_NAME[t.cat].name,href:`openNode('${t.cat}')`},{name:t.title}]);
+  window.scrollTo(0,0);
+}
+function goBack(){ openNode(state.node); }
+function filterCat(cat){
+  state.catFilter=cat; state.view="home"; showViews(); renderHome(); goHomeKeepCat();
+}
+function goHomeKeepCat(){}
+function setSort(s){
+  state.sort=s;
+  document.querySelectorAll("[data-sort]").forEach(b=>b.classList.toggle("active", b.dataset.sort===s));
+  if(state.view==="node") renderNode(); else renderHome();
+}
+function nodeCounts(id){
+  const list = topics.filter(t=>t.cat===id);
+  const posts = list.reduce((a,t)=>a+t.posts.length,0);
+  return {n:list.length, p:posts, last:list.length?list[list.length-1]:null};
+}
+function renderHome(){
+  const m=document.getElementById("mainContent");
+  const q=(document.getElementById("searchInput").value||"").toLowerCase();
+  const cf=state.catFilter;
+  let html="";
+  if(q){
+    const found=topics.filter(t=>t.title.toLowerCase().includes(q)||t.body.toLowerCase().includes(q));
+    html=`<div class="cat"><div class="cat-head">Результаты поиска: «${esc(q)}» (${found.length})</div>${found.length?topicRows(found):`<div class="empty"><div class="big">🔍</div>Ничего не найдено</div>`}</div>`;
+  } else {
+    CATS.forEach(cat=>{
+      if(cf!=="all" && cat.id!==cf) return;
+      const rows = cat.nodes.map(n=>{
+        const c=nodeCounts(n.id);
+        return `<div class="node" onclick="openNode('${n.id}')">
+          <div class="node-icon">${n.icon}</div>
+          <div class="node-info"><div class="node-title">${n.name}</div><div class="node-desc">${n.desc}</div></div>
+          <div class="node-stats"><b>${c.n}</b> тем · <b>${c.p}</b> сообщ.</div>
+          <div class="node-last">${c.last?`<b>${esc(c.last.author)}</b> в «${esc(c.last.title)}»`:"Нет тем"}</div>
+        </div>`;
+      }).join("");
+      html+=`<div class="cat"><div class="cat-head">${cat.icon} ${cat.name}<span class="toggle open" onclick="this.classList.toggle('open');this.classList.toggle('closed');this.closest('.cat').querySelector('.nodes')?.classList.toggle('collapsed')"></span></div><div class="nodes">${rows}</div></div>`;
+    });
+    const recent=[...topics].sort((a,b)=>b.ts-a.ts).slice(0,5);
+    html+=`<div class="cat"><div class="cat-head">Последняя активность</div>${topicRows(recent)}</div>`;
+  }
+  m.innerHTML=html;
+  // sidebar stats
+  document.getElementById("stTopics").textContent=topics.length;
+  document.getElementById("stPosts").textContent=topics.reduce((a,t)=>a+t.posts.length,0);
+  document.getElementById("stNew").textContent=user||"—";
+  document.getElementById("lastTopics").innerHTML = topics.length
+    ? [...topics].sort((a,b)=>b.ts-a.ts).slice(0,5).map(t=>`<div class="stat-row"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer" onclick="openTopic('${t.id}')">${esc(t.title)}</span></div>`).join("")
+    : `<div style="color:var(--muted);font-size:12.5px;text-align:center;padding:8px 0">На форуме пока нет тем —<br>нажмите «Создать тему», чтобы написать первую.</div>`;
+}
+function topicRows(list){
+  return list.length? list.map(t=>{
+    const [pn,pc]=PFX[t.pfx]||[null,null];
+    return `<div class="topic" onclick="openTopic('${t.id}')">
+      <span class="pfx ${pc||"pfx-none"}">${pn||""}</span>
+      <div class="topic-info"><div class="topic-title">${esc(t.title)}</div><div class="topic-meta"><b>${esc(t.author)}</b> · ${timeAgo(t.ts)} · раздел «${NODE_NAME[t.cat].name}»</div></div>
+      <div class="topic-stats"><b>${t.posts.length}</b> ответов<br><b>${t.views||0}</b> просм.</div>
+    </div>`;
+  }).join("") : `<div class="empty"><div class="big">🗒️</div>На форуме пока нет тем — нажмите «Создать тему», чтобы написать первую.</div>`;
+}
+function renderNode(){
+  const node=NODE_NAME[state.node];
+  crumbs([{name:"Форум",href:"goHome()"},{name:"Сервер MOSCOW",href:"goHome()"},{name:node.name}]);
+  document.getElementById("nodeTopicsBox").innerHTML =
+    `<div class="cat-head">${node.icon} ${node.name}</div>`+topicRows(topics.filter(t=>t.cat===state.node));
+  setSort(state.sort);
+  const list=topics.filter(t=>t.cat===state.node);
+  const sorted=[...list].sort(state.sort==="new"?(a,b)=>b.ts-a.ts:(a,b)=>b.posts.length-a.posts.length);
+  document.getElementById("nodeTopicsBox").innerHTML =
+    `<div class="cat-head">${node.icon} ${node.name}</div>`+topicRows(sorted);
+}
+function renderTopic(){
+  const t=topics.find(x=>x.id===state.topic); if(!t)return;
+  document.getElementById("postsBox").innerHTML =
+    `<div class="post"><div class="post-side"><div class="avatar">${esc(t.author[0].toUpperCase())}</div><div class="uname">${esc(t.author)}</div><div class="urole">Участник</div></div>
+     <div class="post-main"><div class="post-head"><span>${(PFX[t.pfx]||[null])[0]?`<span class="pfx ${PFX[t.pfx][1]}" style="position:static">${PFX[t.pfx][0]}</span>`:""}</span><span>${timeAgo(t.ts)}</span></div>
+     <div class="post-body">${esc(t.body)}</div></div></div>`
+    + t.posts.map(p=>`<div class="post"><div class="post-side"><div class="avatar">${esc(p.author[0].toUpperCase())}</div><div class="uname">${esc(p.author)}</div><div class="urole">Участник</div></div>
+       <div class="post-main"><div class="post-head"><span></span><span>${timeAgo(p.ts)}</span></div><div class="post-body">${esc(p.body)}</div></div></div>`).join("");
+}
+function sendReply(){
+  const txt=document.getElementById("replyText").value.trim();
+  if(!txt){toast("Введите текст ответа");return;}
+  if(!user){toast("Сначала войдите на форум");openLogin();return;}
+  const t=topics.find(x=>x.id===state.topic);
+  t.posts.push({author:user,ts:Date.now(),body:txt}); save();
+  document.getElementById("replyText").value="";
+  renderTopic(); updateStats(); toast("Ответ отправлен");
+}
+function openModal(){
+  if(!user){ toast("Сначала войдите на форум"); openLogin(); return; }
+  const sel=document.getElementById("mCat");
+  sel.innerHTML=CATS.flatMap(c=>c.nodes.map(n=>`<option value="${n.id}">${c.name} › ${n.name}</option>`)).join("");
+  if(state.node) sel.value=state.node;
+  document.getElementById("mTitle").value=""; document.getElementById("mBody").value="";
+  document.getElementById("topicModal").classList.add("show");
+}
+function closeModal(){ document.querySelectorAll(".overlay").forEach(o=>o.classList.remove("show")); }
+function createTopic(){
+  const cat=document.getElementById("mCat").value;
+  const pfx=document.getElementById("mPfx").value;
+  const title=document.getElementById("mTitle").value.trim();
+  const body=document.getElementById("mBody").value.trim();
+  if(title.length<5){toast("Заголовок слишком короткий");return;}
+  if(!body){toast("Введите текст темы");return;}
+  const id="t"+Date.now();
+  topics.push({id,cat,pfx,title,body,author:user,ts:Date.now(),views:0,posts:[]});
+  save(); closeModal(); updateStats(); toast("Тема опубликована!");
+  openTopic(id);
+}
+function updateStats(){
+  document.getElementById("stTopics").textContent=topics.length;
+  document.getElementById("stPosts").textContent=topics.reduce((a,t)=>a+t.posts.length,0);
+  renderHomeSidebar();
+}
+function renderHomeSidebar(){
+  document.getElementById("lastTopics").innerHTML = topics.length
+    ? [...topics].sort((a,b)=>b.ts-a.ts).slice(0,5).map(t=>`<div class="stat-row"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer" onclick="openTopic('${t.id}')">${esc(t.title)}</span></div>`).join("")
+    : `<div style="color:var(--muted);font-size:12.5px;text-align:center;padding:8px 0">На форуме пока нет тем —<br>нажмите «Создать тему», чтобы написать первую.</div>`;
+}
+/* live online counter */
+let online= Math.floor(1200+Math.random()*400);
+function tickOnline(){
+  online=Math.max(900,online+Math.floor(Math.random()*61-30));
+  document.getElementById("onlineNum").textContent=online.toLocaleString("ru-RU");
+}
+setInterval(tickOnline,3000); tickOnline();
+
+document.querySelectorAll(".overlay").forEach(o=>o.addEventListener("click",e=>{ if(e.target===o) o.classList.remove("show"); }));
+
+load(); userboxRender(); goHome();
+</script>
+</body>
+</html>
